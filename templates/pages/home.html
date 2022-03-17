@@ -1,0 +1,50 @@
+{% extends 'pages/base.html' %}
+
+{% block content %}
+<h1>Welcome to FinTwit</h1>
+
+<div id='tweets'>
+    Replace Me
+</div>
+
+
+<script>
+    const tweetsElement = document.getElementById("tweets")
+    
+    const xhr = new XMLHttpRequest();
+    const method = "GET";
+    const url = "/tweets";
+    const responseType = "json";
+
+    // const getData = async () => {
+    //     try{
+    //         const response = await fetch(url)
+    //         if (response.ok) {
+    //             const jsonResponse = await response.json()
+    //             return jsonResponse;
+    //         }
+    //         throw new Error('Request failed')
+    //     }
+    //     catch(error) {
+    //         console.log(error)
+    //     }
+    // }
+    
+    xhr.responseType = responseType;
+    xhr.open(method, url)
+    xhr.onload = function() {
+        const serverResponse = xhr.response;
+        const listedItems = serverResponse.response;
+        let finalTweetStr = ""
+        for(i=0; i<listedItems.length; i++) {
+            let currentTweet = "<div class='card' id='tweet-" + listedItems[i].id + "><div class='card-header'>UserName</div>" + "<div class='card-body'>" + "<p class='card-text'>" + listedItems[i].content + "</p>" + "<a href='#' class='btn btn-primary'>Like</a></div></div>"
+            finalTweetStr += currentTweet
+        }
+        tweetsElement.innerHTML = finalTweetStr
+        
+    }
+    xhr.send()
+</script>
+{% endblock content %}
+
+
